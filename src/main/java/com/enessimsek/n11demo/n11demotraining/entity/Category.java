@@ -57,11 +57,6 @@ public class Category {
 
     @Override
     public String toString() {
-        return "Category{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", breakdown=" + breakdown +
-                ", topCategoryId=" + topCategoryId +
-                '}';
+        return id==null ? "" : id.toString() ;
     }
 }

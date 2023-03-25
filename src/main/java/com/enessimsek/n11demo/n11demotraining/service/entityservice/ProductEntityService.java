@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductEntityService {
@@ -17,5 +18,31 @@ public class ProductEntityService {
 
     public List<Product> findAll(){
         return (List<Product>) productDao.findAll();
+    }
+
+    public Product findById(Long id){
+        Optional<Product> optionalProduct = productDao.findById(id);
+
+        Product product = null;
+        if(optionalProduct.isPresent()){
+            product = optionalProduct.get();
+        }
+        return product;
+    }
+
+    public Product save(Product product){
+        return productDao.save(product);
+    }
+
+    public void delete(Product product){
+        productDao.delete(product);
+    }
+
+    public void deleteById(Long id){
+        productDao.deleteById(id);
+    }
+
+    public Long count(){
+        return productDao.count();
     }
 }
