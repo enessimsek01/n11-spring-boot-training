@@ -1,14 +1,18 @@
 package com.enessimsek.n11demo.n11demotraining.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
 @Table(name = "product")
-public class Product {
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler","category"})
+public class Product implements Serializable {
     @SequenceGenerator(name="generator", sequenceName = "product_id_seq")
     @Id
     @GeneratedValue(generator = "generator")
@@ -71,12 +75,6 @@ public class Product {
 
     @Override
     public String toString() {
-        return "Product{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", price=" + price +
-                ", createDate=" + createDate +
-                ", category=" + category +
-                '}';
+        return id==null ? "" : id.toString() ;
     }
 }

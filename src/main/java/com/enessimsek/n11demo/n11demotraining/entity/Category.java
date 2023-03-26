@@ -2,9 +2,11 @@ package com.enessimsek.n11demo.n11demotraining.entity;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
+
 @Entity
 @Table(name= "CATEGORY")
-public class Category {
+public class Category implements Serializable {
 
     @SequenceGenerator(name = "generator", sequenceName = "category_id_seq")
     @Id
