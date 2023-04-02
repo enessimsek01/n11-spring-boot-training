@@ -7,10 +7,13 @@ import com.enessimsek.n11demo.n11demotraining.entity.Product;
 import com.enessimsek.n11demo.n11demotraining.exception.ProductNotFoundException;
 import com.enessimsek.n11demo.n11demotraining.service.entityservice.CategoryEntityService;
 import com.enessimsek.n11demo.n11demotraining.service.entityservice.ProductEntityService;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -32,8 +35,19 @@ public class ProductController {
 
 
     @GetMapping("")
-    public List<Product> findAllProductList() {
-        return productEntityService.findAll();
+    public MappingJacksonValue findAllProductList() {
+
+        List<Product> productList = productEntityService.findAll();
+
+        SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.filterOutAllExcept("id","name","price","category");
+
+        SimpleFilterProvider filters = new SimpleFilterProvider().addFilter("ProductFilter", filter);
+
+        MappingJacksonValue mapping = new MappingJacksonValue(productList);
+
+        mapping.setFilters(filters);
+
+        return mapping;
     }
 
     @GetMapping("/{id}")
