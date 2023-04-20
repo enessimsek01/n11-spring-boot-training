@@ -39,7 +39,7 @@ public class ProductController {
 
         List<Product> productList = productEntityService.findAll();
 
-        SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.filterOutAllExcept("id","name","price","category");
+        SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.filterOutAllExcept("id", "name", "price", "category");
 
         SimpleFilterProvider filters = new SimpleFilterProvider().addFilter("ProductFilter", filter);
 
@@ -54,8 +54,8 @@ public class ProductController {
     public EntityModel findById(@PathVariable Long id) {
         Product product = productEntityService.findById(id);
 
-        if(product == null){
-            throw new ProductNotFoundException("Product Not Found with: "+ id);
+        if (product == null) {
+            throw new ProductNotFoundException("Product Not Found with: " + id);
         }
 
         WebMvcLinkBuilder linkToProduct = WebMvcLinkBuilder.linkTo(
@@ -71,15 +71,19 @@ public class ProductController {
     @GetMapping("dto/{id}")
     public ProductDetailDto findByProductDtoById(@PathVariable Long id) {
         Product product = productEntityService.findById(id);
-        ProductDetailDto productDetailDto = convertProductToProductDetailDto(product);
+//        ProductDetailDto productDetailDto = convertProductToProductDetailDto(product);
+        ProductDetailDto productDetailDto = ProductConverter.INSTANCE.convertProductToProductDetailDto(product);
         return productDetailDto;
     }
+
     @PostMapping("")
-    public ResponseEntity<Product> saveProduct(@RequestBody ProductDto productDto){
+    public ResponseEntity<Product> saveProduct(@RequestBody ProductDto productDto) {
 
-        Product product = convertProductToProductDto(productDto);
+        Product product = ProductConverter.INSTANCE.convertProductDtoToProduct(productDto);
 
-        product =productEntityService.save(product);
+//        Product product = convertProductToProductDto(productDto);
+
+        product = productEntityService.save(product);
 
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -90,8 +94,9 @@ public class ProductController {
 
         return ResponseEntity.created(uri).build();
     }
+
     @DeleteMapping("{id}")
-    public void deleteProduct(@PathVariable Long id){
+    public void deleteProduct(@PathVariable Long id) {
         productEntityService.deleteById(id);
     }
 
