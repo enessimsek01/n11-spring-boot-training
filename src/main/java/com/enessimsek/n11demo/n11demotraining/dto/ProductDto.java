@@ -3,6 +3,8 @@ package com.enessimsek.n11demo.n11demotraining.dto;
 import com.enessimsek.n11demo.n11demotraining.entity.Category;
 import com.fasterxml.jackson.annotation.JsonFilter;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.Size;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -11,8 +13,10 @@ import java.util.Date;
 public class ProductDto {
 
     private Long id;
+    @Size(min = 2)
     private String name;
     private BigDecimal price;
+    @Past
     private Date createDate;
     private Long categoryId;
 

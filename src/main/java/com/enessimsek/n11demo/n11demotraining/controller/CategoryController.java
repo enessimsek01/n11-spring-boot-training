@@ -55,9 +55,6 @@ public class CategoryController {
 
         Category category = CategoryConverter.INSTANCE.convertCategoryDtoToCategory(categoryDto);
 
-        if(category.getTopCategory() != null && category.getTopCategory().getId() == null){
-            category.setTopCategory(null);
-        }
         category = categoryEntityService.save(category);
 
         URI uri = ServletUriComponentsBuilder

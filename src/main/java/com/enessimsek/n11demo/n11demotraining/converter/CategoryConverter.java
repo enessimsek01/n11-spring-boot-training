@@ -3,9 +3,8 @@ package com.enessimsek.n11demo.n11demotraining.converter;
 
 import com.enessimsek.n11demo.n11demotraining.dto.CategoryDto;
 import com.enessimsek.n11demo.n11demotraining.entity.Category;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.ReportingPolicy;
+import org.aspectj.lang.annotation.After;
+import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
@@ -23,4 +22,11 @@ public interface CategoryConverter {
 
     @Mapping(target = "topCategory.id", source = "topCategoryId")
     Category convertCategoryDtoToCategory(CategoryDto categoryDto);
+
+    @AfterMapping
+    default void setNulls(@MappingTarget final Category category, CategoryDto categoryDto){
+        if(categoryDto.getTopCategoryId()==null){
+            category.setTopCategory(null);
+        }
+    }
 }

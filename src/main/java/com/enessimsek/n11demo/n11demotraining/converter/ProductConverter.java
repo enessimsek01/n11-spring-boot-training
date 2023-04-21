@@ -1,11 +1,12 @@
 package com.enessimsek.n11demo.n11demotraining.converter;
 
+import com.enessimsek.n11demo.n11demotraining.dto.CategoryDto;
 import com.enessimsek.n11demo.n11demotraining.dto.ProductDetailDto;
 import com.enessimsek.n11demo.n11demotraining.dto.ProductDto;
+import com.enessimsek.n11demo.n11demotraining.entity.Category;
 import com.enessimsek.n11demo.n11demotraining.entity.Product;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.ReportingPolicy;
+import org.aspectj.lang.annotation.After;
+import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
@@ -30,5 +31,12 @@ public interface ProductConverter {
     @Mapping(source = "category.name", target = "categoryName")
     List<ProductDetailDto> convertAllProductListToProductDetailDtoList(List<Product> productList);
 
+
+    @AfterMapping
+    default void setNulls(@MappingTarget final Product product, ProductDto productDto){
+        if(productDto.getCategoryId()==null){
+            product.setCategory(null);
+        }
+    }
 
 }

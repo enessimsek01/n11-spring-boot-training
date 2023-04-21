@@ -10,6 +10,7 @@ import com.enessimsek.n11demo.n11demotraining.service.entityservice.CategoryEnti
 import com.enessimsek.n11demo.n11demotraining.service.entityservice.ProductEntityService;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import jakarta.validation.Valid;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
@@ -91,11 +92,10 @@ public class ProductController {
     }
 
     @PostMapping("")
-    public ResponseEntity<Product> saveProduct(@RequestBody ProductDto productDto) {
+    public ResponseEntity<Product> saveProduct(@Valid @RequestBody ProductDto productDto) {
 
         Product product = ProductConverter.INSTANCE.convertProductDtoToProduct(productDto);
 
-//        Product product = convertProductToProductDto(productDto);
 
         product = productEntityService.save(product);
 
