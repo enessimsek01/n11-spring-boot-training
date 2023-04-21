@@ -48,4 +48,9 @@ public class ProductEntityService {
     public Long count(){
         return productDao.count();
     }
+
+    public List<Product> findAllByCategoryOrderByIdDesc(Long categoryId){
+        return productDao.findAllByCategoryOrderByIdDesc(categoryId);
+    }
+
 }

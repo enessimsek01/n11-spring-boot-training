@@ -22,7 +22,7 @@ public class Category implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_top_category")
-    private Category topCategoryId;
+    private Category topCategory;
 
 
     public Long getId() {
@@ -49,12 +49,12 @@ public class Category implements Serializable {
         this.breakdown = breakdown;
     }
 
-    public Category getTopCategoryId() {
-        return topCategoryId;
+    public Category getTopCategory() {
+        return topCategory;
     }
 
-    public void setTopCategoryId(Category topCategoryId) {
-        this.topCategoryId = topCategoryId;
+    public void setTopCategory(Category topCategory) {
+        this.topCategory = topCategory;
     }
 
     @Override

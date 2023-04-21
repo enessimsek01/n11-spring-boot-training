@@ -1,5 +1,6 @@
 package com.enessimsek.n11demo.n11demotraining.controller;
 
+import com.enessimsek.n11demo.n11demotraining.converter.ProductConverter;
 import com.enessimsek.n11demo.n11demotraining.dto.ProductDetailDto;
 import com.enessimsek.n11demo.n11demotraining.dto.ProductDto;
 import com.enessimsek.n11demo.n11demotraining.entity.Category;
@@ -10,7 +11,6 @@ import com.enessimsek.n11demo.n11demotraining.service.entityservice.ProductEntit
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonValue;
@@ -21,7 +21,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/products/")
+@RequestMapping("/api/products")
 public class ProductController {
 
     private final ProductEntityService productEntityService;
@@ -39,9 +39,9 @@ public class ProductController {
 
         List<Product> productList = productEntityService.findAll();
 
-        SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.filterOutAllExcept("id", "name", "price", "category");
+        String filterName = "ProductFilter";
 
-        SimpleFilterProvider filters = new SimpleFilterProvider().addFilter("ProductFilter", filter);
+        SimpleFilterProvider filters = getProductFilterProvider(filterName);
 
         MappingJacksonValue mapping = new MappingJacksonValue(productList);
 
@@ -51,7 +51,7 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public EntityModel findById(@PathVariable Long id) {
+    public MappingJacksonValue findById(@PathVariable Long id) {
         Product product = productEntityService.findById(id);
 
         if (product == null) {
@@ -61,16 +61,30 @@ public class ProductController {
         WebMvcLinkBuilder linkToProduct = WebMvcLinkBuilder.linkTo(
                 WebMvcLinkBuilder.methodOn(this.getClass()).findAllProductList()
         );
-        EntityModel entityModel = EntityModel.of(product);
+        ProductDto productDto = ProductConverter.INSTANCE.convertProductToProductDto(product);
+
+        String filterName = "ProductDtoFilter";
+
+        SimpleFilterProvider filters = getProductFilterProvider(filterName);
+
+        EntityModel entityModel = EntityModel.of(productDto);
 
         entityModel.add(linkToProduct.withRel("all-products"));
 
-        return entityModel;
+        MappingJacksonValue mapping = new MappingJacksonValue(entityModel);
+
+        mapping.setFilters(filters);
+
+        return mapping;
     }
 
-    @GetMapping("dto/{id}")
+    @GetMapping("/detail/{id}")
     public ProductDetailDto findByProductDtoById(@PathVariable Long id) {
         Product product = productEntityService.findById(id);
+
+        if (product == null) {
+            throw new ProductNotFoundException("Product Not Found with: " + id);
+        }
 //        ProductDetailDto productDetailDto = convertProductToProductDetailDto(product);
         ProductDetailDto productDetailDto = ProductConverter.INSTANCE.convertProductToProductDetailDto(product);
         return productDetailDto;
@@ -95,9 +109,17 @@ public class ProductController {
         return ResponseEntity.created(uri).build();
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public void deleteProduct(@PathVariable Long id) {
         productEntityService.deleteById(id);
+    }
+
+    @GetMapping("/category/{categoryId}")
+    public List<ProductDetailDto> findAllProductByCategoryId(@PathVariable Long categoryId){
+        List<Product> productList = productEntityService.findAllByCategoryOrderByIdDesc(categoryId);
+        List<ProductDetailDto> productDetailDtoList = ProductConverter.INSTANCE.convertAllProductListToProductDetailDtoList(productList);
+
+        return productDetailDtoList;
     }
 
     private Product convertProductToProductDto(ProductDto productDto) {
@@ -119,5 +141,16 @@ public class ProductController {
         productDetailDto.setProductPrice(product.getPrice());
         productDetailDto.setCategoryName(category.getName());
         return productDetailDto;
+    }
+
+
+    private static SimpleFilterProvider getProductFilterProvider(String filterName) {
+        SimpleBeanPropertyFilter filter = getProductFilter();
+
+        return new SimpleFilterProvider().addFilter(filterName, filter);
+    }
+
+    private static SimpleBeanPropertyFilter getProductFilter() {
+        return SimpleBeanPropertyFilter.filterOutAllExcept("id", "name", "price", "createDate");
     }
 }

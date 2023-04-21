@@ -32,6 +32,13 @@ public class N11DemoTrainingApplication {
 
 //        findCategoryList(categoryEntityService);
 
+        List<Category> test2 = categoryEntityService.findAllByNameEndsWith("test2");
+
+        for (Category category : test2) {
+            System.out.println(category.getName());
+        }
+
+
     }
 
     private static void saveBook(CategoryEntityService categoryEntityService) {
@@ -44,7 +51,7 @@ public class N11DemoTrainingApplication {
         Category bottomBook = new Category();
         bottomBook.setBreakdown(2L);
         bottomBook.setName("Bottom Book");
-        bottomBook.setTopCategoryId(book);
+        bottomBook.setTopCategory(book);
 
         categoryEntityService.save(bottomBook);
     }
@@ -92,7 +99,7 @@ public class N11DemoTrainingApplication {
         Category category = new Category();
         category.setName("Telefon");
         category.setBreakdown(2L);
-        category.setTopCategoryId(topCategory);
+        category.setTopCategory(topCategory);
 
         category = categoryEntityService.save(category);
         System.out.println(category);

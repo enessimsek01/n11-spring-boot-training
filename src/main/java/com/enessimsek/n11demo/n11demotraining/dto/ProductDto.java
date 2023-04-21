@@ -1,11 +1,13 @@
 package com.enessimsek.n11demo.n11demotraining.dto;
 
 import com.enessimsek.n11demo.n11demotraining.entity.Category;
+import com.fasterxml.jackson.annotation.JsonFilter;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
+@JsonFilter("ProductDtoFilter")
 public class ProductDto {
 
     private Long id;
