@@ -11,6 +11,7 @@ import com.enessimsek.n11demo.n11demotraining.transactional.ts5.Ts5Service1;
 import com.enessimsek.n11demo.n11demotraining.transactional.ts6.Ts6Service1;
 import com.enessimsek.n11demo.n11demotraining.transactional.ts7.Ts7Service;
 import com.enessimsek.n11demo.n11demotraining.transactional.ts8.Ts8Service;
+import com.enessimsek.n11demo.n11demotraining.transactional.ts9.Ts9Service1;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -45,6 +46,9 @@ public class TransactionalController {
 
     @Autowired
     private Ts8Service ts8Service;
+
+    @Autowired
+    private Ts9Service1 ts9Service1;
 
     /**
      * 1: transactional olmayan yerde kayıt işlemi
@@ -108,5 +112,13 @@ public class TransactionalController {
     @PostMapping("/ts8")
     public void ts8(){
         ts8Service.save();
+    }
+
+    /**
+     * 9: requires new i farklı classa taşıma
+     */
+    @PostMapping("/ts9")
+    public void ts9(){
+        ts9Service1.save();
     }
 }
