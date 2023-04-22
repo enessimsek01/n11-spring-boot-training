@@ -9,6 +9,7 @@ import com.enessimsek.n11demo.n11demotraining.transactional.ts11.Ts11Service1;
 import com.enessimsek.n11demo.n11demotraining.transactional.ts12.Ts12Service1;
 import com.enessimsek.n11demo.n11demotraining.transactional.ts13.Ts13Service1;
 import com.enessimsek.n11demo.n11demotraining.transactional.ts14.Ts14Service1;
+import com.enessimsek.n11demo.n11demotraining.transactional.ts15.Ts15Service1;
 import com.enessimsek.n11demo.n11demotraining.transactional.ts2.Ts2Service;
 import com.enessimsek.n11demo.n11demotraining.transactional.ts3.Ts3Service1;
 import com.enessimsek.n11demo.n11demotraining.transactional.ts4.Ts4Service1;
@@ -69,6 +70,9 @@ public class TransactionalController {
 
     @Autowired
     private Ts14Service1 ts14Service1;
+
+    @Autowired
+    private Ts15Service1 ts15Service1;
 
     /**
      * 1: transactional olmayan yerde kayıt işlemi
@@ -180,5 +184,13 @@ public class TransactionalController {
     @PostMapping("/ts14")
     public void ts14(){
         ts14Service1.save();
+    }
+
+    /**
+     * 15: not_suppoted (hızlı)
+     */
+    @PostMapping("/ts15")
+    public void ts15(){
+        ts15Service1.save();
     }
 }
