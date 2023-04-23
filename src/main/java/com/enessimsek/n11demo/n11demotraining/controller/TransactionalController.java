@@ -15,6 +15,7 @@ import com.enessimsek.n11demo.n11demotraining.transactional.ts17.Ts17Service1;
 import com.enessimsek.n11demo.n11demotraining.transactional.ts18.Ts18Service1;
 import com.enessimsek.n11demo.n11demotraining.transactional.ts19.Ts19Service1;
 import com.enessimsek.n11demo.n11demotraining.transactional.ts2.Ts2Service;
+import com.enessimsek.n11demo.n11demotraining.transactional.ts20.Ts20Service;
 import com.enessimsek.n11demo.n11demotraining.transactional.ts3.Ts3Service1;
 import com.enessimsek.n11demo.n11demotraining.transactional.ts4.Ts4Service1;
 import com.enessimsek.n11demo.n11demotraining.transactional.ts5.Ts5Service1;
@@ -89,6 +90,9 @@ public class TransactionalController {
 
     @Autowired
     private Ts19Service1 ts19Service1;
+
+    @Autowired
+    private Ts20Service ts20Service;
 
 
     /**
@@ -239,6 +243,14 @@ public class TransactionalController {
     @PostMapping("/ts19")
     public void ts19(){
         ts19Service1.test();
+    }
+
+    /**
+     * 20: never öncesinde transaction yok
+     */
+    @PostMapping("/ts20")
+    public void ts20(){
+        ts20Service.save();
     }
 
 }
