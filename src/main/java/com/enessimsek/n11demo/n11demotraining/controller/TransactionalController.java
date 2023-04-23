@@ -13,6 +13,7 @@ import com.enessimsek.n11demo.n11demotraining.transactional.ts15.Ts15Service1;
 import com.enessimsek.n11demo.n11demotraining.transactional.ts16.Ts16Service1;
 import com.enessimsek.n11demo.n11demotraining.transactional.ts17.Ts17Service1;
 import com.enessimsek.n11demo.n11demotraining.transactional.ts18.Ts18Service1;
+import com.enessimsek.n11demo.n11demotraining.transactional.ts19.Ts19Service1;
 import com.enessimsek.n11demo.n11demotraining.transactional.ts2.Ts2Service;
 import com.enessimsek.n11demo.n11demotraining.transactional.ts3.Ts3Service1;
 import com.enessimsek.n11demo.n11demotraining.transactional.ts4.Ts4Service1;
@@ -85,6 +86,9 @@ public class TransactionalController {
 
     @Autowired
     private Ts18Service1 ts18Service1;
+
+    @Autowired
+    private Ts19Service1 ts19Service1;
 
 
     /**
@@ -228,6 +232,13 @@ public class TransactionalController {
     @PostMapping("/ts18")
     public void ts18(){
         ts18Service1.test();
+    }
+    /**
+     * 19: transaction açıp kapatma maliyeti
+     */
+    @PostMapping("/ts19")
+    public void ts19(){
+        ts19Service1.test();
     }
 
 }
