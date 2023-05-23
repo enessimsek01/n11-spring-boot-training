@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -72,5 +73,9 @@ public class ProductControllerForMongoDb {
     @GetMapping("kategoriler/{categoryId}")
     public List<ProductDetailDto> findAllProductByKategoriId(@PathVariable String categoryId){
         return productService.findAllProductByCategoryId(categoryId);
+    }
+    @GetMapping("test/{price}")
+    public Product test(@PathVariable BigDecimal price){
+        return productService.findByPrice2(price);
     }
 }

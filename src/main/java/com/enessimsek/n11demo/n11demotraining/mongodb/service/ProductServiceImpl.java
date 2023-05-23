@@ -8,6 +8,7 @@ import com.enessimsek.n11demo.n11demotraining.mongodb.service.entiryservice.Prod
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -55,4 +56,11 @@ public class ProductServiceImpl implements ProductService {
 
         return productDetailDtoList;
     }
+
+    @Override
+    public Product findByPrice2(BigDecimal price) {
+        return productEntityServiceForMongoDb.findByPrice2(price);
+    }
+
+
 }

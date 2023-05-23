@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,6 +43,10 @@ public class ProductEntityServiceForMongoDb {
 
     public List<Product> findAllProductByCategoryId(String categoryId) {
         return productRepository.findAllByCategoryId(categoryId);
+    }
+
+    public Product findByPrice2(BigDecimal price){
+        return productRepository.findByPrice2(price);
     }
 
 }
